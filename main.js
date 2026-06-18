@@ -33,7 +33,7 @@ app.whenReady().then(() => {
         }
     ]
 
-    const contextMenu = Menu.buildFormTemplate(menuTemplate)
+    const contextMenu = Menu.buildFromTemplate(menuTemplate)
     tray.setContextMenu(contextMenu)
     
     
