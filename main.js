@@ -1,19 +1,30 @@
-const {app, BrowserWindow, ipcMain, screen, desktopCapturer, shell} = require('electron')
+const {app, BrowserWindow, ipcMain, screen, desktopCapturer, shell, Tray} = require('electron')
 const path = require("node:path")
 const fs = require("node:fs")
 const os = require("node:os")
 
 // Is app ready and initialized? Show the app window
 app.whenReady().then(() => {
-    const windwow = new BrowserWindow({
+    const window = new BrowserWindow({
         webPreferences: {
             contextIsolation: false,
             nodeIntegration: true,
         },
         frame: false,
         transparent: true,
+        show: false
     })
-    windwow.loadFile('index.html')
+    const iconPath = path.join(__dirname, "assets/camera.ico")
+    const tray = new Tray(iconPath)
+    tray.on("click", ()=>{
+        if(window.isVisible()) {
+            window.hide()
+        } else {
+            window.show()
+        }
+    })
+
+    window.loadFile('index.html')
 
     ipcMain.on("capture-screen", async () => {
         const screenSize = screen.getPrimaryDisplay().workAreaSize;
