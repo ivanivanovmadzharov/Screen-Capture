@@ -1,10 +1,38 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain, screen, desktopCapturer, shell} = require('electron')
+const path = require("node:path")
+const fs = require("node:fs")
+const os = require("node:os")
 
 // Is app ready and initialized? Show the app window
 app.whenReady().then(() => {
     const windwow = new BrowserWindow({
+        webPreferences: {
+            contextIsolation: false,
+            nodeIntegration: true,
+        },
         frame: false,
         transparent: true,
     })
     windwow.loadFile('index.html')
+
+    ipcMain.on("capture-screen", async () => {
+        const screenSize = screen.getPrimaryDisplay().workAreaSize;
+        const screens = await desktopCapturer.getSources({
+            types: ["screen"],
+            thumbnailSize: {
+                width: screenSize.width,
+                height: screenSize.height
+            }
+        })
+
+        const img = screens[0].thumbnail.toPNG();
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+        const fileName = `screenshot-${timestamp}.png`
+        const filePath = path.join(os.homedir(),fileName)
+
+        fs.writeFile(filePath, img, (err) => {
+            shell.openExternal(`file://${filePath}`)
+        })
+
+    })
 })
