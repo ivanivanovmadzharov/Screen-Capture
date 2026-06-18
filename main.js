@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, screen, desktopCapturer, shell, Tray} = require('electron')
+const {app, BrowserWindow, ipcMain, screen, desktopCapturer, shell, Tray, Menu} = require('electron')
 const path = require("node:path")
 const fs = require("node:fs")
 const os = require("node:os")
@@ -24,6 +24,19 @@ app.whenReady().then(() => {
         }
     })
 
+    const menuTemplate = [
+        {
+            label: "Quit",
+            click: () => {
+                app.quit()
+            }
+        }
+    ]
+
+    const contextMenu = Menu.buildFormTemplate(menuTemplate)
+    tray.setContextMenu(contextMenu)
+    
+    
     window.loadFile('index.html')
 
     ipcMain.on("capture-screen", async () => {
