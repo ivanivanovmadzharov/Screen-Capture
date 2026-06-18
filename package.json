@@ -19,7 +19,8 @@
     ],
     "directories": {
       "output": "dist"
-    }
+    },
+    "icon": "assets/camera"
   },
   "devDependencies": {
     "electron": "^42.4.1",
