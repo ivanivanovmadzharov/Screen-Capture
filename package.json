@@ -8,10 +8,22 @@
   "main": "main.js",
   "scripts": {
     "start": "nodemon --ext js,css,html --exec electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.im.screencapture",
+    "productName": "Screen Capture",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    }
   },
   "devDependencies": {
     "electron": "^42.4.1",
+    "electron-builder": "^26.15.3",
     "nodemon": "^3.1.14"
   }
 }
